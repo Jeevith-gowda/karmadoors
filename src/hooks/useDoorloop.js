@@ -1,6 +1,16 @@
 import { useState, useEffect, useCallback } from "react";
 import * as api from "../api/doorloop";
 
+const ENDPOINTS = [
+  ["properties",     api.getProperties],
+  ["tenants",        api.getTenants],
+  ["leases",         api.getLeases],
+  ["payments",       api.getRentPayments],
+  ["units",          api.getUnits],
+  ["bills",          api.getBills],
+  ["journalEntries", api.getJournalEntries],
+];
+
 export function useDoorloop() {
   const [data, setData] = useState({
     properties: [],
@@ -18,33 +28,25 @@ export function useDoorloop() {
   const refresh = useCallback(async () => {
     setLoading(true);
     setError(null);
-    try {
-      const [propRes, tenantRes, leaseRes, payRes, unitRes, billRes, journalRes] =
-        await Promise.all([
-          api.getProperties(),
-          api.getTenants(),
-          api.getLeases(),
-          api.getRentPayments(),
-          api.getUnits(),
-          api.getBills(),
-          api.getJournalEntries(),
-        ]);
 
-      setData({
-        properties:     propRes?.data    || [],
-        tenants:        tenantRes?.data   || [],
-        leases:         leaseRes?.data    || [],
-        payments:       payRes?.data      || [],
-        units:          unitRes?.data     || [],
-        bills:          billRes?.data     || [],
-        journalEntries: journalRes?.data  || [],
-      });
-      setLastRefresh(new Date());
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    const results = await Promise.allSettled(ENDPOINTS.map(([, fn]) => fn()));
+
+    const next = {};
+    const failures = [];
+    results.forEach((res, i) => {
+      const [key] = ENDPOINTS[i];
+      if (res.status === "fulfilled") {
+        next[key] = res.value?.data || [];
+      } else {
+        next[key] = [];
+        failures.push(`${key}: ${res.reason?.message || "unknown error"}`);
+      }
+    });
+
+    setData(next);
+    setLastRefresh(new Date());
+    setError(failures.length === ENDPOINTS.length ? failures.join(" | ") : null);
+    setLoading(false);
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);

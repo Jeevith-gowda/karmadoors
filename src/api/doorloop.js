@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.DEV ? "/api" : import.meta.env.VITE_DOORLOOP_BASE_URL;
+const BASE_URL = "/api";
 const API_KEY  = import.meta.env.VITE_DOORLOOP_API_KEY;
 
 const headers = {

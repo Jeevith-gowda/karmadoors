@@ -9,11 +9,12 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/api': {
-        target: 'https://api.doorloop.com',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      }
+      '/api/properties':           { target: 'https://api.doorloop.com', changeOrigin: true, rewrite: p => p.replace(/^\/api/, '') },
+      '/api/tenants':              { target: 'https://api.doorloop.com', changeOrigin: true, rewrite: p => p.replace(/^\/api/, '') },
+      '/api/leases':               { target: 'https://api.doorloop.com', changeOrigin: true, rewrite: p => p.replace(/^\/api/, '') },
+      '/api/units':                { target: 'https://api.doorloop.com', changeOrigin: true, rewrite: p => p.replace(/^\/api/, '') },
+      '/api/bills':                { target: 'https://api.doorloop.com', changeOrigin: true, rewrite: p => p.replace(/^\/api/, '') },
+      '/api/accounts':             { target: 'https://api.doorloop.com', changeOrigin: true, rewrite: p => p.replace(/^\/api/, '') },
     }
   }
 })

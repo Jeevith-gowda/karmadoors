@@ -49,6 +49,7 @@ export function useDoorloop() {
     setLoading(false);
   }, []);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { refresh(); }, [refresh]);
 
   return { data, loading, error, refresh, lastRefresh };

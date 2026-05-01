@@ -36,7 +36,8 @@ export function useDoorloop() {
     results.forEach((res, i) => {
       const [key] = ENDPOINTS[i];
       if (res.status === "fulfilled") {
-        next[key] = res.value?.data || [];
+        const v = res.value;
+        next[key] = v?.data ?? v?.items ?? v?.results ?? (Array.isArray(v) ? v : []);
       } else {
         next[key] = [];
         failures.push(`${key}: ${res.reason?.message || "unknown error"}`);
@@ -45,7 +46,7 @@ export function useDoorloop() {
 
     setData(next);
     setLastRefresh(new Date());
-    setError(failures.length === ENDPOINTS.length ? failures.join(" | ") : null);
+    setError(failures.length ? failures.join(" | ") : null);
     setLoading(false);
   }, []);
 

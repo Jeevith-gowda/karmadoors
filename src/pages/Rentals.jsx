@@ -14,7 +14,7 @@ export default function Rentals({ data, loading }) {
   });
 
   const activeLeaseUnitIds = new Set(
-    leases.filter(l => l.status === "active").map(l => l.unitId)
+    leases.filter(l => l.status?.toLowerCase() === "active").map(l => l.unitId)
   );
 
   const filtered = properties.filter(p =>

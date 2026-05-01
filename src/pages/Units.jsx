@@ -15,16 +15,16 @@ export default function Units({ data, loading }) {
   const propById = Object.fromEntries(properties.map(p => [p.id, p]));
 
   const activeLeaseByUnit = {};
-  leases.filter(l => l.status === "active").forEach(l => {
+  leases.filter(l => l.status?.toLowerCase() === "active").forEach(l => {
     activeLeaseByUnit[l.unitId] = l;
   });
 
   const futureLeaseByUnit = {};
   leases
-    .filter(l => l.status !== "active" && l.start && new Date(l.start) > new Date())
+    .filter(l => l.status?.toLowerCase() !== "active" && l.start && new Date(l.start) > new Date())
     .forEach(l => { futureLeaseByUnit[l.unitId] = l; });
 
-  const isOccupied = u => !!(activeLeaseByUnit[u.id] || u.status === "occupied");
+  const isOccupied = u => !!(activeLeaseByUnit[u.id] || u.status?.toLowerCase() === "occupied");
 
   const occupied = units.filter(isOccupied).length;
   const vacant   = units.length - occupied;

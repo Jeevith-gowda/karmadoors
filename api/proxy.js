@@ -1,8 +1,9 @@
 export default async function handler(req, res) {
-  const { path = [], ...queryParams } = req.query;
-  const pathStr = path.join("/");
-  const qs = new URLSearchParams(queryParams).toString();
-  const target = `https://app.doorloop.com/api/${pathStr}${qs ? `?${qs}` : ""}`;
+  const { dlpath, ...rest } = req.query;
+  if (!dlpath) return res.status(400).json({ error: "Missing path" });
+
+  const qs = new URLSearchParams(rest).toString();
+  const target = `https://app.doorloop.com/api/${dlpath}${qs ? `?${qs}` : ""}`;
 
   try {
     const upstream = await fetch(target, {
@@ -13,7 +14,6 @@ export default async function handler(req, res) {
         Accept: "application/json",
       },
     });
-
     const body = await upstream.text();
     res
       .status(upstream.status)

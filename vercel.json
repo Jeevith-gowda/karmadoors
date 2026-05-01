@@ -3,6 +3,7 @@
   "outputDirectory": "dist",
   "installCommand": "npm ci",
   "routes": [
+    { "src": "/api/(.*)", "dest": "/api/proxy?dlpath=$1" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]

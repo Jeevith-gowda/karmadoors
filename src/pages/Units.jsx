@@ -40,24 +40,24 @@ export default function Units({ data, loading }) {
         <h1 className="text-2xl font-bold text-slate-900">
           Units <span className="text-sm font-normal text-slate-400 ml-2">{filtered.length}</span>
         </h1>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
           <select
             value={propFilter}
             onChange={e => setProp(e.target.value)}
-            className="px-3 py-2 text-sm rounded-xl border border-slate-200 bg-white outline-none focus:ring-2 focus:ring-indigo-200"
+            className="flex-1 sm:flex-none px-3 py-2 text-sm rounded-xl border border-slate-200 bg-white outline-none focus:ring-2 focus:ring-indigo-200"
           >
             <option value="all">All Properties</option>
             {properties.map(p => (
               <option key={p.id} value={p.id}>{p.name || p.displayName}</option>
             ))}
           </select>
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               placeholder="Search units…"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 bg-white outline-none focus:ring-2 focus:ring-indigo-200 w-48"
+              className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 bg-white outline-none focus:ring-2 focus:ring-indigo-200 sm:w-48"
             />
           </div>
         </div>

@@ -41,7 +41,7 @@ export default function Rentals({ data, loading }) {
           placeholder="Search properties…"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="pl-4 pr-4 py-2 text-sm rounded-xl border border-slate-200 bg-white outline-none focus:ring-2 focus:ring-indigo-200 w-56"
+          className="w-full sm:w-56 pl-4 pr-4 py-2 text-sm rounded-xl border border-slate-200 bg-white outline-none focus:ring-2 focus:ring-indigo-200"
         />
       </div>
 

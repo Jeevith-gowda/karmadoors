@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Sidebar   from "./components/layout/Sidebar";
 import TopBar    from "./components/layout/TopBar";
@@ -13,14 +14,15 @@ import { useDoorloop } from "./hooks/useDoorloop";
 
 export default function App() {
   const { data, loading, error, refresh, lastRefresh } = useDoorloop();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <BrowserRouter>
       <div className="flex min-h-screen bg-slate-50">
-        <Sidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <TopBar onRefresh={refresh} lastRefresh={lastRefresh} />
-          <main className="flex-1 overflow-y-auto p-6">
+        <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+          <TopBar onRefresh={refresh} lastRefresh={lastRefresh} onMenuOpen={() => setSidebarOpen(true)} />
+          <main className="flex-1 overflow-y-auto p-4 sm:p-6">
             {error && (
               <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
                 API Error: {error}

@@ -1,15 +1,8 @@
 {
   "rewrites": [
-    { "source": "/api/properties",            "destination": "https://api.doorloop.com/properties" },
-    { "source": "/api/properties/:id",        "destination": "https://api.doorloop.com/properties/:id" },
-    { "source": "/api/tenants",               "destination": "https://api.doorloop.com/tenants" },
-    { "source": "/api/tenants/:id",           "destination": "https://api.doorloop.com/tenants/:id" },
-    { "source": "/api/leases",                "destination": "https://api.doorloop.com/leases" },
-    { "source": "/api/leases/:id",            "destination": "https://api.doorloop.com/leases/:id" },
-    { "source": "/api/leases/rent-payments",  "destination": "https://api.doorloop.com/leases/rent-payments" },
-    { "source": "/api/units",                 "destination": "https://api.doorloop.com/units" },
-    { "source": "/api/units/:id",             "destination": "https://api.doorloop.com/units/:id" },
-    { "source": "/api/bills",                 "destination": "https://api.doorloop.com/bills" },
-    { "source": "/api/accounts/ledger",       "destination": "https://api.doorloop.com/accounts/ledger" }
+    {
+      "source": "/api/:path*",
+      "destination": "https://app.doorloop.com/api/:path*"
+    }
   ]
 }

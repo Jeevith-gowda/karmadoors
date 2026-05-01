@@ -24,18 +24,18 @@ export const getTenant      = (id)           => get(`/tenants/${id}`);
 export const getLeases      = (params = "") => get(`/leases?limit=100${params}`);
 export const getLease       = (id)           => get(`/leases/${id}`);
 
-// Payments
-export const getRentPayments = (params = "") => get(`/leases/rent-payments?limit=100${params}`);
+// Rent Payments  (correct DoorLoop path: /lease-payments)
+export const getRentPayments = (params = "") => get(`/lease-payments?limit=100${params}`);
 
 // Units
 export const getUnits        = (params = "") => get(`/units?limit=100${params}`);
 export const getUnitsByProp  = (propertyId)  => get(`/units?limit=100&filter_propertyId=${propertyId}`);
 
-// Bills / Expenses
-export const getBills        = (params = "") => get(`/bills?limit=100${params}`);
+// Vendor Bills  (correct DoorLoop path: /vendor-bills)
+export const getBills        = (params = "") => get(`/vendor-bills?limit=100${params}`);
 
-// Journal Entries (fallback for expense transactions)
-export const getJournalEntries = (params = "") => get(`/journal-entries?limit=100${params}`);
+// Expenses  (correct DoorLoop path: /expenses — replaces non-existent /journal-entries)
+export const getJournalEntries = (params = "") => get(`/expenses?limit=100${params}`);
 
-// Ledger / Reports
-export const getLedger       = (params = "") => get(`/accounts/ledger?limit=100${params}`);
+// Accounts  (correct DoorLoop path: /accounts)
+export const getLedger       = (params = "") => get(`/accounts?limit=100${params}`);

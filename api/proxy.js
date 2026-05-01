@@ -12,6 +12,8 @@ export default async function handler(req, res) {
         Authorization: `Bearer ${process.env.DOORLOOP_API_KEY}`,
         "Content-Type": "application/json",
         Accept: "application/json",
+        Origin: "https://karmadoors.vercel.app",
+        Referer: "https://karmadoors.vercel.app/",
       },
     });
     const body = await upstream.text();

@@ -1,25 +1,43 @@
-import { NavLink } from "react-router-dom";
-import { X, Building2, LayoutDashboard, Grid3X3, Users, FileText, DollarSign, Receipt, BarChart3 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import {
+  X, Building2, LayoutDashboard, Grid3X3, Users, FileText,
+  DollarSign, Receipt, BarChart3, ChevronDown, Home,
+} from "lucide-react";
 
-const nav = [
-  { to: "/dashboard", label: "Dashboard",    icon: LayoutDashboard },
-  { to: "/rentals",   label: "Rentals",      icon: Building2 },
-  { to: "/units",     label: "Units",        icon: Grid3X3 },
-  { to: "/tenants",   label: "Tenants",      icon: Users },
-  { to: "/leases",    label: "Leases",       icon: FileText },
-  { to: "/payments",  label: "Payments",     icon: DollarSign },
-  { to: "/expenses",  label: "Expenses",     icon: Receipt },
-  { to: "/reports",   label: "Reports",      icon: BarChart3 },
+const topNav = [
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
 ];
 
+const bottomNav = [
+  { to: "/tenants",  label: "Tenants",  icon: Users },
+  { to: "/leases",   label: "Leases",   icon: FileText },
+  { to: "/payments", label: "Payments", icon: DollarSign },
+  { to: "/expenses", label: "Expenses", icon: Receipt },
+  { to: "/reports",  label: "Reports",  icon: BarChart3 },
+];
+
+const rentalsSubNav = [
+  { to: "/rentals", label: "Properties", icon: Building2 },
+  { to: "/units",   label: "Units",      icon: Grid3X3 },
+];
+
+const linkClass = (isActive) =>
+  `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all
+  ${isActive ? "bg-white/10 text-white" : "text-slate-400 hover:text-white hover:bg-white/5"}`;
+
 export default function Sidebar({ open, onClose }) {
+  const location = useLocation();
+  const inRentals = location.pathname === "/rentals" || location.pathname === "/units";
+  const [rentalsOpen, setRentalsOpen] = useState(inRentals);
+
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { if (inRentals) setRentalsOpen(true); }, [inRentals]);
+
   return (
     <>
       {open && (
-        <div
-          className="fixed inset-0 bg-black/50 z-20 lg:hidden"
-          onClick={onClose}
-        />
+        <div className="fixed inset-0 bg-black/50 z-20 lg:hidden" onClick={onClose} />
       )}
 
       <aside className={`
@@ -38,29 +56,53 @@ export default function Sidebar({ open, onClose }) {
               <p className="text-xs text-slate-500">Residential</p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="lg:hidden p-1 text-slate-400 hover:text-white transition-colors"
-          >
+          <button onClick={onClose} className="lg:hidden p-1 text-slate-400 hover:text-white transition-colors">
             <X size={18} />
           </button>
         </div>
 
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-          {nav.map(({ to, label, icon: Icon }) => (
-            <NavLink
-              key={to}
-              to={to}
-              onClick={onClose}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all
-                ${isActive
-                  ? "bg-white/10 text-white"
-                  : "text-slate-400 hover:text-white hover:bg-white/5"}`
-              }
+          {topNav.map(({ to, label, icon: Icon }) => (
+            <NavLink key={to} to={to} onClick={onClose}
+              className={({ isActive }) => linkClass(isActive)}
             >
-              <Icon size={18} />
-              {label}
+              <Icon size={18} />{label}
+            </NavLink>
+          ))}
+
+          {/* Rentals group */}
+          <div>
+            <button
+              onClick={() => setRentalsOpen(o => !o)}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all
+                ${inRentals ? "bg-white/10 text-white" : "text-slate-400 hover:text-white hover:bg-white/5"}`}
+            >
+              <Home size={18} />
+              <span className="flex-1 text-left">Rentals</span>
+              <ChevronDown size={14} className={`transition-transform ${rentalsOpen ? "rotate-180" : ""}`} />
+            </button>
+
+            {rentalsOpen && (
+              <div className="mt-1 ml-3 pl-3 border-l border-white/10 space-y-1">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 px-3 pt-1 pb-0.5">
+                  Real Estate
+                </p>
+                {rentalsSubNav.map(({ to, label, icon: Icon }) => (
+                  <NavLink key={to} to={to} onClick={onClose}
+                    className={({ isActive }) => linkClass(isActive)}
+                  >
+                    <Icon size={16} />{label}
+                  </NavLink>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {bottomNav.map(({ to, label, icon: Icon }) => (
+            <NavLink key={to} to={to} onClick={onClose}
+              className={({ isActive }) => linkClass(isActive)}
+            >
+              <Icon size={18} />{label}
             </NavLink>
           ))}
         </nav>

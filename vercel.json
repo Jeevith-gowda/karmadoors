@@ -5,10 +5,6 @@
   "installCommand": "npm ci",
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://app.doorloop.com/api/:path*"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

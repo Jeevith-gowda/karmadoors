@@ -37,9 +37,12 @@ export function useDoorloop() {
       const [key] = ENDPOINTS[i];
       if (res.status === "fulfilled") {
         const v = res.value;
+        console.log(`[DoorLoop] ${key} raw response:`, v);
         next[key] = v?.data ?? v?.items ?? v?.results ?? (Array.isArray(v) ? v : []);
+        console.log(`[DoorLoop] ${key} extracted (${next[key].length} items):`, next[key][0]);
       } else {
         next[key] = [];
+        console.error(`[DoorLoop] ${key} failed:`, res.reason);
         failures.push(`${key}: ${res.reason?.message || "unknown error"}`);
       }
     });

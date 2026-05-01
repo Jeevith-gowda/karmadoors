@@ -28,6 +28,13 @@ export default function App() {
                 API Error: {error}
               </div>
             )}
+            {!loading && (
+              <div className="mb-4 p-3 bg-slate-100 border border-slate-200 rounded-xl text-xs text-slate-500 flex flex-wrap gap-3">
+                {Object.entries(data).map(([k, v]) => (
+                  <span key={k}><strong>{k}:</strong> {Array.isArray(v) ? v.length : "?"}</span>
+                ))}
+              </div>
+            )}
             <Routes>
               <Route path="/"           element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard"  element={<Dashboard data={data} loading={loading} />} />
